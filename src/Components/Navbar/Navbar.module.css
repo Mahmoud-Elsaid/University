@@ -1,0 +1,77 @@
+
+
+@media screen and (min-width:200px) and (max-width:900px) {
+    .logo
+{
+    width: 30% !important;
+    height: 120px !important;
+}
+}
+
+.logo
+{
+    width: 15%;
+    height: 120px;
+}
+
+.logo img{
+    width: 90% !important;
+    height: 100%;
+}
+
+.myNav
+{
+    width: 70% !important;
+}
+
+
+.mainNav a
+{
+    color: var(--main-color) ;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.mainNav a:hover
+{
+    color: var(--second-color) !important;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+
+
+
+
+.dropdownLink
+{
+    color: white !important;
+}
+
+.dropdownLink:hover
+{
+    color: var(--second-color) ;
+}
+
+
+
+@media screen and (min-width:1200px) {
+    .mainNavList
+{
+    width: 100%;
+}
+
+.mainNavItems
+{
+    width: 100%;
+}
+}
+
+/* Container alignment refinements */
+.myNav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
