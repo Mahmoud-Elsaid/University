@@ -1,60 +1,18 @@
-import React, { useContext, useEffect } from 'react'
-import { BannerContext } from '../../Context/BannerContext'
-import Banner from '../Banner/Banner'
-import { NavLink, Outlet } from 'react-router-dom'
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import PageLayout from '../Layout/PageLayout';
+import { Activity, Cpu, BookOpen } from 'lucide-react';
 
-export default function Fildes() {
-    
-    const { setBanner } = useContext(BannerContext)
+const sectorLinks = [
+    { to: 'Medical-sector', label: 'القطاع الطبي', icon: Activity },
+    { to: 'Engineering-sector', label: 'القطاع الهندسي', icon: Cpu },
+    { to: 'Humanities-sector', label: 'قطاع العلوم الإنسانية', icon: BookOpen },
+];
 
-    useEffect(() => {
-        setBanner('قطاعات الجامعة')
-    }, [setBanner]);
-
+export default function Sectors() {
     return (
-        <>
-            <Banner/>
-
-            <div className='container mt-5'>
-                <div className='row'>
-                    <div className='col-md-4'>
-                        <div className='sector-item sideList'>
-                            <ul className='list-unstyled'>
-                                <li className='my-2'>
-                                    <NavLink 
-                                        className='btn btn-outline-success w-100' 
-                                        to='Engineering-sector'
-                                    >
-                                        Engineering Sector
-                                    </NavLink>
-                                </li>
-
-                                <li className='my-2'>
-                                    <NavLink 
-                                        className='btn btn-outline-success w-100' 
-                                        to='Humanities-sector'
-                                    >
-                                        Humanities Sector
-                                    </NavLink>
-                                </li>
-
-                                <li className='my-2'>
-                                    <NavLink 
-                                        className='btn btn-outline-success w-100' 
-                                        to='Medical-sector'
-                                    >
-                                        Medical Sector
-                                    </NavLink>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div className='col-md-8'>
-                        <Outlet/>
-                    </div>
-                </div>
-            </div>
-        </>
-    )
+        <PageLayout title="قطاعات الجامعة" links={sectorLinks}>
+            <Outlet />
+        </PageLayout>
+    );
 }

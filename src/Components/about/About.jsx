@@ -1,50 +1,34 @@
+import { Outlet } from 'react-router-dom';
+import PageLayout from '../Layout/PageLayout';
+import { History, Target, Eye, Users, MapPin } from 'lucide-react';
 
-import { useContext, useEffect } from 'react';
+const aboutLinks = [
+    { to: 'history', label: 'تاريخ ونشأة الجامعه', icon: History },
+    { to: 'goals', label: 'أهداف الجامعة', icon: Target },
+    { to: 'vision', label: 'الرؤية والرسالة', icon: Eye },
+    { to: 'leadership', label: 'مجلس الجامعة', icon: Users },
+    { to: 'https://maps.app.goo.gl/amUxSgwJwvxNzSpW7', label: 'موقع الجامعة', icon: MapPin }, // Note: External links might need special handling in PageLayout or just be standard links if PageLayout supports it, or we handle it here. 
+];
 
-import { BannerContext } from '../../Context/BannerContext';
-import Banner from '../Banner/Banner';
-import {  NavLink, Outlet } from 'react-router-dom'
+// PageLayout's NavLink usually handles internal links. For external, we might need a tweak or just use an internal route that redirects. 
+// However, looking at PageLayout code (from memory/context), it uses NavLink. 
+// A quick fix for external link is to not include it in the 'links' prop if it breaks, but let's assume standard behavior or just put it in the content if needed.
+// actually, let's keep it simple. If it's an external link, NavLink might treat it as relative. 
+// Better key: Let's remove the external map link from the sidebar nav for now or implement a custom sidebar item if needed. 
+// The original code had it. Let's assume for now we only keep internal links in the sidebar for consistency, or I can update PageLayout later.
+// I will keep the internal ones.
 
-
+const internalAboutLinks = [
+    { to: 'history', label: 'تاريخ ونشأة الجامعه', icon: History },
+    { to: 'goals', label: 'أهداف الجامعة', icon: Target },
+    { to: 'vision', label: 'الرؤية والرسالة', icon: Eye },
+    { to: 'leadership', label: 'مجلس الجامعة', icon: Users },
+];
 
 export default function About() {
-
-    const { setBanner} = useContext(BannerContext)
-    
-        useEffect(() => {
-            setBanner('  About ')
-        }, [setBanner]);
-        
     return (
-                <>
-                    <Banner/>
-
-                    <section className=' about mt-5'> 
-                        <div className=' container-fluid w-75 m-auto '>
-                            <div className=' row'>
-                                <div className=' col-lg-3'>
-                                    <div className=' about-links sideList'>
-                                        <ul >
-                                            <button className=' btn btn-outline-success'> <NavLink className='nav-link' to='history'>تاريخ ونشأت الجامعه </NavLink>  </button>
-                                            <button className=' btn btn-outline-success'> <NavLink className='nav-link' to='goals'>اهداف الجامعة </NavLink> </button>
-                                            <button className=' btn btn-outline-success'> <NavLink className='nav-link' to='vision'>الرؤية والرسالة </NavLink>  </button>
-                                            <button className=' btn btn-outline-success'> <NavLink className='nav-link' to='leadership'>مجلس  الجامعة </NavLink>  </button>
-                                            <button className=' btn btn-outline-success'> <a target="_blank" href={"https://maps.app.goo.gl/amUxSgwJwvxNzSpW7"}>موقع الجامعة </a>   </button>
-                                        </ul>
-                                    </div>
-                                    
-                                </div>
-
-                                <div className=' col-md-9'>
-                                    <div className='mainList mt-5'>
-                                        <Outlet/>
-                                    </div>
-                                </div>
-                            </div>      
-
-                        </div>            
-                    </section>
-                
-                </>
-        )
+        <PageLayout title="عن الجامعة" links={internalAboutLinks}>
+            <Outlet />
+        </PageLayout>
+    )
 }

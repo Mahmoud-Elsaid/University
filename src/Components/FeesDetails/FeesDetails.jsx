@@ -1,52 +1,35 @@
 
 
 
-
-import React, { useContext, useEffect } from 'react'
+import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { BannerContext } from '../../Context/BannerContext';
 
 export default function FeesDetails() {
-
-  const { setBanner} = useContext(BannerContext)
-      
-      
-     
-      
-
   const location = useLocation();
-
   const chosenPart = location.pathname.split('/').pop();
 
-
-
   const egyptianFees = [
-    {images :"../../../public/images/admissons/money.JPG"},
-    {images:"../../../public/images/admissons/money 2.jpg"},
-    {images:"../../../public/images/admissons/money 3.jpg"},
-  ]
-
+    { images: "/images/admissons/money.JPG" },
+    { images: "/images/admissons/money 2.jpg" },
+    { images: "/images/admissons/money 3.jpg" },
+  ];
 
   const internationalFees = [
-    {images:"../../../public/images/admissons/inter money.webp"}
-  ]
+    { images: "/images/admissons/inter money.webp" }
+  ];
 
+  const data = chosenPart === "EgyptianStudents" ? egyptianFees : 
+               chosenPart === "InternationalStudents" ? internationalFees : null;
 
-  useEffect(() => {
-    setBanner(`Fees / ${chosenPart} `)    }
-    , [setBanner , chosenPart]);
+  if (!data) return <p className="text-center p-10 font-bold text-gray-500">المحتوى غير متاح حالياً.</p>;
 
   return (
-    <>
-      {chosenPart === "EgyptianStudents" ? egyptianFees.map((image , index)=>(
-        <div className=' my-4' key={index}>
-          <img src={image.images} className=' w-100' alt="" />
+    <div className="animate-fadeIn space-y-8">
+      {data.map((item, index) => (
+        <div className="rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow" key={index}>
+          <img src={item.images} className="w-full h-auto object-contain" alt="Fees Details" />
         </div>
-      )): chosenPart ==="InternationalStudents" ? internationalFees.map((image , index)=>(
-        <div className=' my-4' key={index}>
-          <img src={image.images} className=' w-100' alt="" />
-        </div>
-      )): "this item is not available right now"}
-    </>
-  )
+      ))}
+    </div>
+  );
 }

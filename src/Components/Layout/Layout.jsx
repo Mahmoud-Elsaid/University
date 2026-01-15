@@ -4,23 +4,17 @@
 import React from 'react'
 
 import { Outlet } from 'react-router-dom'
-import Navbar from '../Navbar/Navbar'
-import Footer from '../Footer/Footer'
+import Navbar from './Navbar'
+import Footer from './Footer'
 
 export default function Layout() {
     return (
-        <>
-            <div >
-                    <Navbar/>
-                    <div className='py-0'>
-                        <Outlet/>
-                    </div>
-                    <Footer/>
-                
-                
-            </div>
-            
-                
-        </>
+        <div className="min-h-screen flex flex-col font-sans text-right" dir="rtl">
+            <Navbar/>
+            <main className="flex-grow">
+                <Outlet/>
+            </main>
+            <Footer/>
+        </div>
     )
 }
