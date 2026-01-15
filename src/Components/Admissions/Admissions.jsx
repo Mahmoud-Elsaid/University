@@ -1,312 +1,133 @@
-import React, { useContext, useEffect, useState } from 'react'
-import styles from './Admissions.module.css'
-import Banner from '../Banner/Banner'
-import { BannerContext } from '../../Context/BannerContext'
+import React, { useState } from 'react';
+import PageLayout from '../Layout/PageLayout';
+import { ChevronDown, CheckCircle } from 'lucide-react';
+
+const AccordionItem = ({ title, isOpen, toggle, children }) => {
+  return (
+    <div className="border border-gray-100 rounded-xl mb-4 overflow-hidden bg-white shadow-sm transition-all duration-300">
+      <button
+        onClick={toggle}
+        className={`w-full flex items-center justify-between p-5 text-right font-bold text-lg transition-colors ${isOpen ? 'bg-primary-50 text-secondary' : 'text-primary-900 hover:bg-gray-50'}`}
+      >
+        <span>{title}</span>
+        <ChevronDown className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} size={20} />
+      </button>
+      <div className={`transition-all duration-300 overflow-hidden ${isOpen ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}>
+        <div className="p-6 border-t border-gray-100 text-gray-600 leading-loose">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function Admissions() {
+  const [openSection, setOpenSection] = useState('Thanaweya');
 
-        const { setBanner} = useContext(BannerContext)
-    
+  const toggleSection = (section) => {
+    setOpenSection(openSection === section ? null : section);
+  };
 
-    const [ThanaweyaToggle, setThanaweyaToggle] = useState(false);
-    const [americanDiplomaToggle, setamericanDiplomaToggle] = useState(true);
-    const [IGCSEToggle, setIGCSEToggle] = useState(true);
-    const [STEMToggle, setSTEMToggle] = useState(true);
-    const [AzharToggle, setAzharToggle] = useState(true);
+  const ListItem = ({ children }) => (
+    <li className="flex items-start gap-2 mb-2">
+      <CheckCircle className="text-secondary mt-1 flex-shrink-0" size={16} />
+      <span>{children}</span>
+    </li>
+  );
 
-
-    useEffect(() => {
-            setBanner(`Admissions Requirements`)    }
-            , [setBanner]);
+  const SectionTitle = ({ children }) => <h4 className="text-primary-800 font-bold mb-3 mt-4 text-lg">{children}</h4>;
 
   return (
-    <> 
+    <PageLayout title="شروط القبول">
+      
+      {/* Introduction */}
+      <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 mb-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+              <div className="space-y-4">
+                  <h2 className="text-2xl font-bold text-primary-900">مقدمة</h2>
+                  <p className="text-gray-600 leading-loose text-lg">
+                      تتبع الجامعة في سياستها للقبول القواعد والإرشادات العامة التي وضعها مكتب التنسيق بوزارة التعليم العالي.
+                  </p>
+                  <div className="bg-primary-50 p-4 rounded-xl border-r-4 border-secondary">
+                      <p className="font-bold text-primary-800">
+                          رسوم التقديم: 1500 جنيه مصري (غير مستردة).
+                      </p>
+                  </div>
+              </div>
+              <div className="rounded-2xl overflow-hidden shadow-lg h-64">
+                   <img src="/images/computer images/1.jpg" className="w-full h-full object-cover" alt="Admissions" />
+              </div>
+          </div>
+      </div>
 
-    <Banner/>
+      {/* Accordions */}
+      <div className="max-w-4xl mx-auto">
+          <AccordionItem title="الثانوية العامة المصرية" isOpen={openSection === 'Thanaweya'} toggle={() => toggleSection('Thanaweya')}>
+              <SectionTitle>المتطلبات الأكاديمية وغير الأكاديمية:</SectionTitle>
+              <ul className="space-y-2">
+                  <ListItem>شهادة الثانوية العامة الأصلية.</ListItem>
+                  <ListItem>شهادة ميلاد أصلية (كمبيوتر).</ListItem>
+                  <ListItem>6 صور شخصية بحجم جواز السفر.</ListItem>
+                  <ListItem>صورة من بطاقة الرقم القومي.</ListItem>
+                  <ListItem>صورة جواز السفر (اختياري للمصريين، إلزامي لغير المصريين).</ListItem>
+                  <ListItem>نموذج 2 جند و 6 أو 7 جند (للذكور المصريين فقط).</ListItem>
+              </ul>
+              
+              <SectionTitle>للطلاب المحولين:</SectionTitle>
+              <ul className="space-y-2">
+                  <ListItem>خطاب سحب ملف أصلي (من الجامعات الخاصة فقط).</ListItem>
+                  <ListItem>توصيف للمقررات موقع ومختوم من الجامعة السابقة.</ListItem>
+                  <ListItem>سجل دراسي مختوم من الجامعة والمجلس الأعلى للجامعات.</ListItem>
+                  <ListItem>بيان حالة مختوم من الجامعة السابقة.</ListItem>
+              </ul>
+          </AccordionItem>
 
-    <section className={styles.admissions}>
+          <AccordionItem title="الدبلومة الأمريكية" isOpen={openSection === 'American'} toggle={() => toggleSection('American')}>
+              <p className="mb-4">تقبل الجامعة حداً أدنى للمعدل التراكمي (GPA) يبلغ 2.0. قد يُمنح الطلاب المتفوقون في دورات AP ساعات محولة.</p>
+               <SectionTitle>الحد الأدنى للدرجات (EST):</SectionTitle>
+               <ul className="space-y-2 mb-4">
+                  <ListItem>كلية التجارة: 8 مواد + EST 1 (800 درجة).</ListItem>
+                  <ListItem>كلية التكنولوجيا الحيوية: 8 مواد (شاملة المواد العلمية) + EST 1 (800 درجة).</ListItem>
+                  <ListItem>الهندسة والحاسبات: 8 مواد + EST 1 (800 درجة) + EST 2 (900 درجة).</ListItem>
+               </ul>
+               
+               <SectionTitle>المستندات المطلوبة:</SectionTitle>
+               <ul className="space-y-2">
+                   <ListItem>شهادة GPA للصفوف 10، 11، 12 موثقة.</ListItem>
+                   <ListItem>خطاب اعتماد AMIDEAST (للمدارس خارج مصر).</ListItem>
+                   <ListItem>درجات EST 1 و EST 2 موثقة من الإدارة العامة للامتحانات.</ListItem>
+                   <ListItem>إثبات التسلسل الدراسي لمدة 12 عاماً.</ListItem>
+                   <ListItem>شهادة الميلاد وصور شخصية وموقف التجنيد.</ListItem>
+               </ul>
+          </AccordionItem>
 
-        <div className=' container pt-5'>
-            <div className={`row p-4 ${styles.admissionsIntro}`}>
-                <div className=' col-lg-6 mainList'>
-                    <div className='intorductionContent' style={{height:"450px"}}>
-                        <h2>Introduction</h2>
-                        <h4 className=' lead text-muted'>In its admission, Nile University follows the general rules and guidelines set by the Office of Admission, Ministry of Higher Education.</h4>
-                        <h4 className=' lead text-muted'>The fees for application amounts to 1500 EGP (Non Refundable) and the criteria and documents required for each of the accepted certificates are listed below:</h4>
-                    </div>
-                </div>
+          <AccordionItem title="الشهادة البريطانية (IGCSE)" isOpen={openSection === 'IGCSE'} toggle={() => toggleSection('IGCSE')}>
+              <p className="mb-4">يجب تقديم 8 مواد O-Level بتقدير لا يقل عن "C".</p>
+              <SectionTitle>متطلبات الكليات:</SectionTitle>
+                <ul className="space-y-2 mb-4">
+                    <ListItem>التجارة: 8 مواد O-Level (شاملة الإنجليزية والرياضيات).</ListItem>
+                    <ListItem>التكنولوجيا الحيوية: 8 مواد O-Level (شاملة المواد العلمية).</ListItem>
+                    <ListItem>الهندسة: 8 مواد O-Level + مادة AS أو AL Math (بحد أدنى D).</ListItem>
+                </ul>
+          </AccordionItem>
 
-                <div className=' col-lg-6 mainList'>
-                    <div className='introductionImg p-3 pt-5'>
-                        <img src='../../../public/images/computer images/1.jpg' className=' w-100' height={450} alt="" />
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div className={`${styles.admissionsImg} w-75 m-auto p-2 pt-5`}>
-            <h3>For undergraduate</h3>
-            <div>
-                <img src="../../../public/images/admissons/Admission.jpg" className=' w-100' alt="" />
-            </div>
-        </div>
-
-        <div className='w-75 m-auto p-2 pt-5'>
-        <div className={`${styles.title} p-3`}>
-            
-            <button
-                
-                onClick={() => setThanaweyaToggle(!ThanaweyaToggle)}
-                className='btn w-100 d-flex justify-content-between align-items-center'
-            
-            >
-                
-                <span>Thanawya Amma </span>
-                <i className={`fa-solid fa-chevron-down ${styles.icon} ${ThanaweyaToggle ? styles.rotated : ''}`}></i>
-            
-            </button>
-        
-        </div>
-
-        <div className={`${styles.content} ${ThanaweyaToggle ? styles.hidden : ''} p-4 `}>
-            <h4>Academic and Non-Academic Requirements:</h4>
-            <ul>
-                <li className=' lead text-muted'>Official Thanaweya Amma Certificate.</li>
-                <li className=' lead text-muted'>Original birth certificate (computerized).</li>
-                <li className=' lead text-muted'>6 passport-size photos.</li>
-                <li className=' lead text-muted'>Copy of Egyptian national ID.</li>
-                <li className=' lead text-muted'>Copy of passport (optional for Egyptians and required for non-Egyptian applicants).</li>
-                <li className=' lead text-muted'>Military form 2 & 7 or 6 (male only) (for Egyptians).</li>
-            </ul>
-
-
-            <h5>N.B:</h5>
-            <p>For Transferred Students, in addition to the above:</p>
-            <ul>
-                <li className=' lead text-muted'>Original Withdrawal Letter (for private universities only).</li>
-                <li className=' lead text-muted'>Course description signed and stamped from the previous university.</li>
-                <li className=' lead text-muted'>Transcript stamped from the University and the Supreme Council of Universities.</li>
-                <li className=' lead text-muted'>Bayan hala (بيان حالة) stamped from the previous university.</li>
-            </ul>
-        </div>
-        </div>
-
-
-        <div className='w-75 m-auto p-2'>
-        <div className={`${styles.title} p-3`}>
-            
-            <button
-                
-                onClick={() => setamericanDiplomaToggle(!americanDiplomaToggle)}
-                className='btn w-100 d-flex justify-content-between align-items-center'
-            
-            >
-                
-                <span>American Diploma   </span>
-                <i className={`fa-solid fa-chevron-down ${styles.icon} ${americanDiplomaToggle ? styles.rotated : ''}`}></i>
-            
-            </button>
-        
-        </div>
-
-        <div className={`${styles.content} ${americanDiplomaToggle ? styles.hidden : ''} p-4 `}>
-            <p className=' lead text-muted'>Nile University considers the admission of a minimum cumulative Grade Point Average (GPA) of 2.0 (on a scale of 4.0). Students who have scored high on Advanced Placement (AP) courses may be granted transfer credits.</p>
-            <p className=' lead text-muted'>The score mentioned below might be subject to change as per the Ministry of Higher Education and the SCU instructions.</p>
-            <ul>
-                <li className=' lead text-muted'>Business School: 8 subjects from GPA certificate including English and Maths, along with EST 1 with a minimum score of 800.</li>
-                <li className=' lead text-muted'>Biotechnology School: 8 subjects from GPA certificate including English, Maths, Physics, Chemistry, and Biology along with EST 1 with a minimum score of 800.</li>
-                <li className=' lead text-muted'>Engineering and Computer Science School: 8 subjects from GPA certificate including English, Maths, Physics, and Chemistry, along with EST 1 with a minimum score of 800 and EST 2 with a minimum score of 900.</li>
-            </ul>
-
-            <h4>Academic and Non-Academic Requirements:</h4>
-            <ul>
-                <li className=' lead text-muted'>An official American Diploma GPA Certificate (Grades 10, 11 and12) stamped by the American Dipmola Accreditation Association and the General Educational Examination (الادارة العامة للامتحانات) is required for schools inside of Egypt.</li>
-                <li className=' lead text-muted'>If the school is outside of Egypt, the GPA certificate should be stamped by the American Dipmola Accreditation Association, the Egyptian Embassy in the country where the school is located and the Ministry of Foreign Affairs of the country where the school is located.</li>
-                <li className=' lead text-muted'>If the student spends grades 10, 11, and 12 in 3 different schools, they should bring a transcript for each grade separately stamped by the General Examinations Department - in case the school is inside Egypt - and if the school is outside of Egypt, this different transcript should be stamped from the Egyptian Embassy in the country where the school is located and also the Ministry of Foreign Affairs of the country where the school is located.</li>
-                <li className=' lead text-muted'>AMIDEAST letter of Accreditation for schools outside of Egypt only and for schools inside of Egypt, it should be افادة التعليم الخاص بمعادلة المدرسة.</li>
-                <li className=' lead text-muted'>EST 1 and EST II stamped by the General Examination Department.</li>
-                <li className=' lead text-muted'>If taken, Arabic and Religion subjects stamped by the General Examinations Department.</li>
-                <li className=' lead text-muted'>EST username and password.</li>
-                <li className=' lead text-muted'>Proof of 12 years of schooling for schools inside of Egypt should be stamped by the school stamp and the Educational Administration that the school follows. If the school is outside of Egypt, it should be stamped by the Egyptian Embassy in the country where the school is located and the Ministry of Foreign Affairs of the country where the school is located.</li>
-                <li className=' lead text-muted'>Original birth certificate (computerized). </li>
-                <li className=' lead text-muted'>Copy of Egyptian national ID.</li>
-                <li className=' lead text-muted'>Copy of passport (optional for Egyptians and required for non-Egyptian applicants). </li>
-                <li className=' lead text-muted'>6 passport-size photos.</li>
-                <li className=' lead text-muted'>Military form 2 & 7 or 6 (male only) (for Egyptians).</li>
-                <li className=' lead text-muted'>For students who studied outside of Egypt, they must submit a copy of their passport and copy of their student residency during their study (موضح بها تأشيرات الدخول والخروج إقامة الطالب خلال فترة دراسته ).</li>
-            </ul>
-
-            
-
-            <h4> For Transferred students, in addition to the above:</h4>
-            <ul>
-                <li className=' lead text-muted'>Original Withdrawal Letter (for private universities only).</li>
-                <li className=' lead text-muted'>Course description signed and stamped from the previous university.</li>
-                <li className=' lead text-muted'>Transcript stamped from the University and the Supreme Council of Universities.</li>
-                <li className=' lead text-muted'>Bayan hala (بيان حالة) stamped from previous university. </li>
-            </ul>
-
-
-            
-        </div>
-        </div>
-
-        <div className='w-75 m-auto p-2'>
-        <div className={`${styles.title} p-3`}>
-            
-            <button
-                
-                onClick={() => setIGCSEToggle(!IGCSEToggle)}
-                className='btn w-100 d-flex justify-content-between align-items-center'
-            
-            >
-                
-                <span> IGCSE </span>
-                <i className={`fa-solid fa-chevron-down ${styles.icon} ${IGCSEToggle ? styles.rotated : ''}`}></i>
-            
-            </button>
-        
-        </div>
-
-        <div className={`${styles.content} ${IGCSEToggle ? styles.hidden : ''} p-4 `}>
-            <p className=' lead text-muted'>Applicants must submit certificates of 8 subjects at the O-Level with a minimum grade of “C” or “4” (these may only be in the extended and not in the core system). </p>
-            <p className=' lead text-muted'>Subjects must be completed in the four years before university enrollment. Applicants who have completed advanced-level subjects may be granted transfer credits.</p>
-            <ul>
-                <li className=' lead text-muted'>Business school: Minimum of 8 O-Level subjects, including English and Maths, with a minimum score of C.</li>
-                <li className=' lead text-muted'>Biotechnology school: Minimum of 8 O-Level subjects, including English, Maths, Physics, Chemistry, and Biology, with a minimum score of C.</li>
-                <li className=' lead text-muted'>Engineering and Computer Science School:  Minimum of 8 O-Level subjects including English, Maths, Physics, and Chemistry with a minimum score of C and one subject only AS or AL Math course is required with a minimum score of D.</li>
-            </ul>
-
-            <h4>Academic and Non-Academic Requirements:</h4>
-            <ul>
-                <li className=' lead text-muted'>An official IGCSE Certificates stamped by The British Council, Ministry of Foreign Affairs and General Examinations Department is required if the school is inside of Egypt. If the school is outside of Egypt, the certificates should be stamped by The British Council, Ministry of Foreign Affairs.</li>
-                <li className=' lead text-muted'>If taken, Arabic and Religion subjects stamped by the General Examinations Department.</li>
-                <li className=' lead text-muted'>Proof of 12 years of schooling for schools inside of Egypt should be stamped by the school stamp and the Educational Administration that the school follows. If the school is outside of Egypt, it should be stamped by the Egyptian Embassy in the country where the school is located and the Ministry of Foreign Affairs of the country where the school is located.</li>
-                <li className=' lead text-muted'>For Grade 11 Students, they should bring أفادة التعليم الخاص باستيفاء متطلبات التعليم ما قبل الجامعي من stamped from General Department of Examinations - الإدارة العامة للإمتحانات.</li>
-                <li className=' lead text-muted'>Original birth certificate (computerized). </li>
-                <li className=' lead text-muted'>If taken, Arabic and Religion subjects stamped by the General Examinations Department.</li>
-                <li className=' lead text-muted'>Original birth certificate (computerized). </li>
-                <li className=' lead text-muted'>Copy of Egyptian national ID.</li>
-                <li className=' lead text-muted'>Copy of passport (optional for Egyptians and required for non-Egyptian applicants). </li>
-                <li className=' lead text-muted'>6 passport-size photos.</li>
-                <li className=' lead text-muted'>Military form 2 & 7 or 6 (male only) (for Egyptians).</li>
-                <li className=' lead text-muted'>For students who studied outside of Egypt, they must submit a copy of their passport and copy of their student residency during their study (موضح بها تأشيرات الدخول والخروج إقامة الطالب خلال فترة دراسته ).</li>
-            </ul>
-
-            
-
-            <h4> For Transferred students, in addition to the above:</h4>
-            <ul>
-                <li className=' lead text-muted'>Original Withdrawal Letter (for private universities only).</li>
-                <li className=' lead text-muted'>Course description signed and stamped from the previous university.</li>
-                <li className=' lead text-muted'>Transcript stamped from the University and the Supreme Council of Universities.</li>
-                <li className=' lead text-muted'>Bayan hala (بيان حالة) stamped from previous university. </li>
-            </ul>
-
-
-            
-        </div>
-        </div>
-
-        <div className='w-75 m-auto p-2'>
-        <div className={`${styles.title} p-3`}>
-            
-            <button
-                
-                onClick={() => setSTEMToggle(!STEMToggle)}
-                className='btn w-100 d-flex justify-content-between align-items-center'
-            
-            >
-                
-                <span> STEM </span>
-                <i className={`fa-solid fa-chevron-down ${styles.icon} ${STEMToggle ? styles.rotated : ''}`}></i>
-            
-            </button>
-        
-        </div>
-
-        <div className={`${styles.content} ${STEMToggle ? styles.hidden : ''} p-4 `}>
-            <p className=' lead text-muted'>The final grade is calculated out of 700. </p>
-            <p className=' lead text-muted'>The accepted section for Engineering, ITCS, and Biotechnology schools is the scientific section (علمي), and for the School of Business Administration, the art (أدبي) or the scientific section (علمي). </p>
-
-            <h4>For Stem 2024-2025:</h4>
-            <ul>
-                <li className=' lead text-muted'>Engineering: 68%</li>
-                <li className=' lead text-muted'>Biotechnology: 53%</li>
-                <li className=' lead text-muted'>Business: 53%</li>
-                <li className=' lead text-muted'>ITCS: 60%</li>
-            </ul>
-
-            <h4>Academic and Non-Academic Requirements:</h4>
-            <ul>
-                <li className=' lead text-muted'>Official STEM Transcript.</li>
-                <li className=' lead text-muted'>Original birth certificate (computerized). </li>
-                <li className=' lead text-muted'>Copy of Egyptian national ID.</li>
-                <li className=' lead text-muted'>Copy of passport (optional for Egyptians and required for non-Egyptian applicants). </li>
-                <li className=' lead text-muted'>6 passport-size photos.</li>
-                <li className=' lead text-muted'>Military form 2 & 7 or 6 (male only) (for Egyptians).</li>
-            </ul>
-
-            
-
-            <h4> For Transferred students, in addition to the above:</h4>
-            <ul>
-                <li className=' lead text-muted'>Original Withdrawal Letter (for private universities only).</li>
-                <li className=' lead text-muted'>Course description signed and stamped from the previous university.</li>
-                <li className=' lead text-muted'>Transcript stamped from the University and the Supreme Council of Universities.</li>
-                <li className=' lead text-muted'>Bayan hala (بيان حالة) stamped from previous university. </li>
-            </ul>
-
-
-            
-        </div>
-        </div>
-
-        <div className='w-75 m-auto p-2'>
-        <div className={`${styles.title} p-3`}>
-            
-            <button
-                
-                onClick={() => setAzharToggle(!AzharToggle)}
-                className='btn w-100 d-flex justify-content-between align-items-center'
-            
-            >
-                
-                <span>Azhar </span>
-                <i className={`fa-solid fa-chevron-down ${styles.icon} ${AzharToggle ? styles.rotated : ''}`}></i>
-            
-            </button>
-        
-        </div>
-
-        <div className={`${styles.content} ${AzharToggle ? styles.hidden : ''} p-4 `}>
-            <h4>Academic and Non-Academic Requirements:</h4>
-            <ul>
-                <li className=' lead text-muted'>Official Thanaweya Azhary Certificate.</li>
-                <li className=' lead text-muted'>Original birth certificate (computerized).</li>
-                <li className=' lead text-muted'>6 passport-size photos.</li>
-                <li className=' lead text-muted'>Copy of Egyptian national ID.</li>
-                <li className=' lead text-muted'>Copy of passport (optional for Egyptians and required for non-Egyptian applicants).</li>
-                <li className=' lead text-muted'>Military form 2 & 7 or 6 (male only) (for Egyptians).</li>
-            </ul>
-
-
-            <h5>N.B:</h5>
-            <p>For Transferred Students, in addition to the above:</p>
-            <ul>
-                <li className=' lead text-muted'>Original Withdrawal Letter (for private universities only).</li>
-                <li className=' lead text-muted'>Course description signed and stamped from the previous university.</li>
-                <li className=' lead text-muted'>Transcript stamped from the University and the Supreme Council of Universities.</li>
-                <li className=' lead text-muted'>Bayan hala (بيان حالة) stamped from the previous university.</li>
-            </ul>
-        </div>
-        </div>
-
-        
-    </section>
-    
-
-    </>
-    
-  )
+           <AccordionItem title="مدارس المتفوقين (STEM)" isOpen={openSection === 'STEM'} toggle={() => toggleSection('STEM')}>
+                <SectionTitle>تنسيق 2024-2025:</SectionTitle>
+                <ul className="space-y-2 mb-4">
+                    <ListItem>الهندسة: 68%</ListItem>
+                    <ListItem>الحاسبات والمعلومات: 60%</ListItem>
+                    <ListItem>التكنولوجيا الحيوية / التجارة: 53%</ListItem>
+                </ul>
+          </AccordionItem>
+          
+           <AccordionItem title="الثانوية الأزهرية" isOpen={openSection === 'Azhar'} toggle={() => toggleSection('Azhar')}>
+               <SectionTitle>المستندات المطلوبة:</SectionTitle>
+               <ul className="space-y-2">
+                  <ListItem>شهادة الثانوية الأزهرية الأصلية.</ListItem>
+                  <ListItem>نفس الأوراق المطلوبة للثانوية العامة.</ListItem>
+               </ul>
+          </AccordionItem>
+      </div>
+    </PageLayout>
+  );
 }

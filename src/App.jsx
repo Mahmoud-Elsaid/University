@@ -19,6 +19,7 @@ import NewsDetails from './Components/NewsDetails/NewsDetails';
 import Admissions from './Components/Admissions/Admissions';
 import Fees from './Components/Fees/Fees';
 import FeesDetails from './Components/FeesDetails/FeesDetails';
+import NotFound from './Components/NotFound/NotFound';
 
 function App() {
 
@@ -78,6 +79,7 @@ function App() {
           ],
         },
 
+        { path: "*", element: <NotFound /> },
     ]}
 ])
 

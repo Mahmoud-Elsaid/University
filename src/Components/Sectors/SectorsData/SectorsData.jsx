@@ -1,80 +1,56 @@
-import React, { useContext, useEffect } from 'react';
-import { BannerContext } from '../../../Context/BannerContext';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useProjectDataContext } from '../../../Context/ProjectDataProvider';
 
 export default function SectorsData() {
-  const { setBanner } = useContext(BannerContext);
   const location = useLocation();
   const chosenPart = location.pathname.split('/').pop();
   const { data } = useProjectDataContext();
 
   const sector = data?.sectors?.find(s => s.name === chosenPart);
 
-  useEffect(() => {
-    setBanner(`Sectors / ${chosenPart}`);
-  }, [setBanner, chosenPart]);
-
-  if (!sector) return <p>Sector not found</p>;
+  if (!sector) return <p className="text-red-500 font-bold p-10 text-center">عذراً، لم يتم العثور على بيانات القطاع.</p>;
+  
+  // Helper to fix image paths
+  const getImagePath = (path) => {
+    if (!path) return '';
+    return path.replace(/^(\.\.\/)*\/?public\//, '/');
+  };
 
   return (
-    <div className="my-5">
-      <h1 className="text-center mb-4">{chosenPart}</h1>
+    <div className="animate-fadeIn">
+      <h2 className="text-3xl font-bold text-primary-900 mb-6">{chosenPart.replace('-sector', '')} Sector</h2>
+      
+      {sector.desecration && (
+          <p className="text-gray-600 leading-loose mb-10 text-lg">{sector.desecration}</p>
+      )}
 
-      {sector.desecration && <p className="mb-5">{sector.desecration}</p>}
-
-      <h2 className="mb-3">Management</h2>
-      <div className="d-flex flex-wrap gap-4">
-        {sector.doctors.map((doctor, index) => (
-          <div
-            key={index}
-            className="card"
-            style={{
-              width: '250px',
-              border: '1px solid #ccc',
-              borderRadius: '10px',
-              overflow: 'hidden',
-              boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-            }}
-          >
-            <img
-              src={doctor.image}
-              alt={doctor.name}
-              style={{ width: '100%', height: '200px', objectFit: 'cover' }}
-            />
-            <div className="p-3 text-center">
-              <h5 className="fw-bold">{doctor.name}</h5>
-              <p className="text-muted">{doctor.job}</p>
+      <h3 className="text-xl font-bold text-secondary mb-6 border-b border-gray-100 pb-2">الهيئة الإدارية</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        {sector.doctors?.map((doctor, index) => (
+          <div key={index} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100 overflow-hidden">
+            <img src={getImagePath(doctor.image)} alt={doctor.name} className="w-full h-48 object-cover" />
+            <div className="p-4 text-center">
+              <h5 className="font-bold text-primary-900 mb-1">{doctor.name}</h5>
+              <p className="text-sm text-gray-500">{doctor.job}</p>
             </div>
           </div>
         ))}
       </div>
 
-      <h2 className="mt-5 mb-3">Faculties</h2>
-      <div className="d-flex flex-wrap gap-4">
-        {sector.facalties.map((faculty, index) => (
+      <h3 className="text-xl font-bold text-secondary mb-6 border-b border-gray-100 pb-2">الكليات التابعة</h3>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+        {sector.facalties?.map((faculty, index) => (
           <Link
             key={index}
             to={`/faculties/${faculty.id}/doctors`}
-            className="card text-center text-decoration-none"
-            style={{
-              width: '200px',
-              border: '1px solid #ccc',
-              borderRadius: '10px',
-              overflow: 'hidden',
-              boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-              color: '#000',
-            }}
+            className="group block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all border border-gray-100 overflow-hidden"
           >
-                        
-
-            <img
-              src={`../../../..${faculty.image}`}
-              alt={faculty.name}
-              style={{ width: '100%', height: '150px', objectFit: 'cover' }}
-            />
-            <div className="p-3">
-              <h6 className="fw-bold">{faculty.name}</h6>
+            <div className="h-32 bg-gray-50 flex items-center justify-center p-4">
+                 <img src={getImagePath(faculty.image)} alt={faculty.name} className="h-20 w-auto object-contain transition-transform group-hover:scale-110" />
+            </div>
+            <div className="p-3 text-center bg-white">
+              <h6 className="font-bold text-gray-800 text-sm">{faculty.name}</h6>
             </div>
           </Link>
         ))}
